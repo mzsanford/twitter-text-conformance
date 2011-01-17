@@ -1,0 +1,61 @@
+
+tests:
+  usernames:
+    - description: "Highlight the beginning of a string"
+      text: "@username text"
+      entities:
+        user_mentions:
+          - indicies: [0, 9]
+            screen_name: "username"
+            name: "Real Name"
+            id: 3
+            id_str: "3"
+      expected: "@<a class=\"tweet-url username\" href=\"http://twitter.com/username\">username</a> text"
+
+    - description: "Highlight the end of a string"
+      text: "text @username"
+      entities:
+        user_mentions:
+          - indicies: [5, 14]
+            screen_name: "username"
+            name: "Real Name"
+            id: 3
+            id_str: "3"
+      expected: "text @<a class=\"tweet-url username\" href=\"http://twitter.com/username\">username</a>"
+
+  hashtags:
+    - description: "Highlight the beginning of a string"
+      text: "#hashtag text"
+      entities:
+        hashtags:
+          - indicies: [0, 8]
+            text: "hashtag"
+      expected: "#<a class=\"tweet-url hashtag\" href=\"http://twitter.com/search?q=%23hashtag\">hashtag</a> text"
+
+    - description: "Highlight the beginning of a string"
+      text: "text #hashtag"
+      entities:
+        hashtags:
+          - indicies: [5, 13]
+            text: "hashtag"
+      expected: "text #<a class=\"tweet-url hashtag\" href=\"http://twitter.com/search?q=%23hashtag\">hashtag</a>"
+
+  all:
+    - description: "All entities in one Tweet"
+      text: "@username #hashtag http://example.com/"
+      entities:
+        hashtags:
+          - indicies: [11, 19]
+            text: "hashtag"
+        user_mentions:
+          - indicies: [0, 9]
+            screen_name: "username"
+            name: "Real Name"
+            id: 3
+            id_str: "3"
+        urls:
+          - indicies: [20, 39]
+            url: "http://example.com/"
+            expanded_url: "http://example.com/expand"
+            display_url: "http://example.com/display"
+      expected: "@<a class=\"tweet-url username\" href=\"http://twitter.com/username\">username</a> #<a class=\"tweet-url hashtag\" href=\"http://twitter.com/search?q=%23hashtag\">hashtag</a> <a class=\"tweet-url\" href=\"http://example.com/\">http://example.com/display</a>"
